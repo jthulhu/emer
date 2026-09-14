@@ -1,0 +1,9 @@
+[package]
+name = "emer"
+authors = ["jthulhu <jthulhu@2mon.ad>"]
+edition = "2024"
+homepage = "https://github.com/jthulhu/emer"
+repository = "https://github.com/jthulhu/emer"
+license = "AGPL-3.0-or-later"
+version = "1.0.0"
+description = "Simple error helper library"
