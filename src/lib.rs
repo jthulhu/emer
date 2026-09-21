@@ -3,6 +3,7 @@ use std::{
     error::Error as StdError,
     fmt::{self, Display, Formatter},
     ops::{Deref, DerefMut},
+    sync::Arc,
 };
 
 #[macro_export]
@@ -25,12 +26,12 @@ macro_rules! throw {
     };
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ErrorInfo {
     file: &'static str,
     line: u32,
     column: u32,
-    backtrace: Backtrace,
+    backtrace: Arc<Backtrace>,
 }
 
 impl ErrorInfo {
@@ -47,11 +48,11 @@ impl ErrorInfo {
     }
 
     pub fn backtrace(&self) -> &Backtrace {
-        &self.backtrace
+        &*self.backtrace
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Error<T> {
     pub kind: Box<T>,
     pub info: Option<Box<ErrorInfo>>,
@@ -97,7 +98,7 @@ impl<T> Error<T> {
                 file,
                 line,
                 column,
-                backtrace,
+                backtrace: Arc::new(backtrace),
             })),
         }
     }
